@@ -1,56 +1,86 @@
-<h1><input type="text" [(ngModel)]="nom"></h1>
-<h2><select name="statut" id="statut" [(ngModel)]="statut" (change)="statutTaux()">
-    <option value=1 >Cadre</option>
-    <option value=2>Agent de maîtrise</option>
-    <option value=3>Employé de bureau</option>
-  </select></h2>
+<div class="m-2 text-light">
+    <div>
+        <h1><input type="text" [(ngModel)]="nom" class="bg-dark text-light" placeholder="Nom du salarié"></h1>
+        <h2><select name="statut" id="statut" [(ngModel)]="statut" (change)="statutTaux()" class="bg-dark text-light">
+      <option value=1>Cadre</option>
+      <option value=2>Agent de maîtrise</option>
+      <option value=3>Employé de bureau</option>
+    </select></h2>
+    </div>
 
-<h3>Salaire de base</h3>
+    <div>
+        <h3>Salaire de base</h3>
+        <p class="text-info fst-italic" (mouseenter)="afficheInfo()" (mouseleave)="hideInfo()">taux horaire x heures travaillées (+majoration)</p>
+        <div id="descri" class="d-none fst-italic text-info">
+            <p>de 169 à 180 heures le taux horaire est majoré de 50 %</p>
+            <p>au delà de 180 heures le taux horaire est majoré de 60 %</p>
+        </div>
+        <p>Taux horaire</p>
+        <p>Pour ce poste : {{taux}}€ / heure</p>
+        <input type="number" id="heures" [(ngModel)]="heures" (input)="calculBase()">
+        <p class="fw-bold">{{base}}€</p>
+    </div>
 
-<p>taux horaire * heures travaillées(+majoration)</p>
-<p>Taux horaire</p>
-<p>{{taux}}</p>
-<input type="number" id="heures" [(ngModel)]="heures" (input)="calculBase()">
-<p>{{base}}</p>
+    <div>
+        <h3>Cotisations salariales</h3>
+        <div>
+            <h5>Contribution dette sociale</h5>
+            <p>Salaire net * 3.49%</p>
+            <p>{{detteSoc}}€</p>
+        </div>
 
-<h3>Cotisations salariales</h3>
+        <div>
+            <h5>Contribution sociale</h5>
+            <p>Salaire net * 6.51%</p>
+            <p>{{contriSoc}}€</p>
+        </div>
 
-<h5>Contribution dette sociale</h5>
-<p>Salaire net * 3.49%</p>
-<p>{{detteSoc}}</p>
+        <div>
+            <h5>Assurance maladie</h5>
+            <p>Salaire net * 0.95%</p>
+            <p>{{assMal}}€</p>
+        </div>
 
-<h5>Contribution sociale</h5>
-<p>Salaire net * 6.51%</p>
-<p>{{contriSoc}}</p>
+        <div>
+            <h5>Assurance vieillesse</h5>
+            <p>Salaire net * 8.44%</p>
+            <p>{{assViell}}€</p>
+        </div>
 
-<h5>Assurance maladie</h5>
-<p>Salaire net * 0.95%</p>
-<p>{{assMal}}</p>
+        <div>
+            <h5>Assurance chômage</h5>
+            <p>Salaire net * 3.05%</p>
+            <p>{{assChom}}€</p>
+        </div>
 
-<h5>Assurance vieillesse</h5>
-<p>Salaire net * 8.44%</p>
-<p>{{assViell}}</p>
+        <div>
+            <h5>Retraite complémentaire</h5>
+            <p>Salaire net * 3.81%</p>
+            <p>{{retrComp}}€</p>
+        </div>
 
-<h5>Assurance chômage</h5>
-<p>Salaire net * 3.05%</p>
-<p>{{assChom}}</p>
+        <div>
+            <h5>Cotisation AGFF</h5>
+            <p>Salaire net * 1.02%</p>
+            <p>{{cortisAGFF}}€</p>
+        </div>
 
-<h5>Retraite complémentaire</h5>
-<p>Salaire net * 3.81%</p>
-<p>{{retrComp}}</p>
+        <div>
+            <h4>Total cotisations salariales</h4>
+            <h4>{{totalCotis}}€</h4>
+        </div>
+    </div>
 
-<h5>Cotisation AGFF</h5>
-<p>Salaire net * 1.02%</p>
-<p>{{cortisAGFF}}</p>
+    <div>
+        <h3>Prime</h3>
+        <label for="enfant">Nombre d'enfants</label>
+        <input type="number" id="enfant" [(ngModel)]="enfant" (input)="calculPrime()">
+        <p>{{prime}}</p>
+    </div>
 
-<h4>Total cotisations salariales</h4>
-<h4>{{totalCotis}}</h4>
-
-<h3>Prime</h3>
-<label for="enfant">Nombre d'enfants</label>
-<input type="number" id="enfant" [(ngModel)]="enfant" (input)="calculPrime()">
-<p>{{prime}}</p>
-
-<h2>Net à payer</h2>
-<button (click)="calculTotal()">Total</button>
-<h2>{{TTC}}</h2>
+    <div>
+        <h2>Net à payer</h2>
+        <button (click)="calculTotal()">Total</button>
+        <h2>{{TTC}}</h2>
+    </div>
+</div>

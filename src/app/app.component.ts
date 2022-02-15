@@ -16,7 +16,21 @@ export class AppComponent {
   taux = 0
   base = 0
   newtaux = 0
+  newtaux2 = 0
   maj = 0
+  heuresup = 0
+  heuresup2 = 0
+
+
+  afficheInfo() {
+    let descri = document.getElementById("descri")
+    descri?.classList.replace("d-none", "d-block")
+  }
+
+  hideInfo() {
+    let descri = document.getElementById("descri")
+    descri?.classList.replace("d-block", "d-none")
+  }
 
   statutTaux() {
     if (this.statut == 1) {
@@ -34,25 +48,23 @@ export class AppComponent {
   }
 
   calculBase() {
-
-    if (this.heures <= 169) {
-      this.base = this.heures * this.taux
+    if (this.heures > 0) {
+      if (this.heures <= 169) {
+        this.base = this.heures * this.taux
+      }
+      if (this.heures > 169) {
+        this.heuresup = this.heures - 169;
+        this.maj = this.taux / 2;
+        this.newtaux = this.taux + this.maj;
+        if (this.heures > 180) {
+          this.heuresup = 11;
+          this.heuresup2 = this.heures - 180;
+          this.newtaux2 = this.taux + (this.taux * 0.6)
+        }
+        this.base = ((this.heures - this.heuresup) * this.taux) + (this.heuresup * this.newtaux) + (this.heuresup2 * this.newtaux2);
+      }
+      this.calculCotis()
     }
-    if (this.heures > 169) {
-      this.maj = this.taux / 2;
-      this.newtaux = this.taux + this.maj;
-      this.base = this.heures * this.newtaux;
-      console.log(this.taux);
-      console.log(this.newtaux);
-    }
-    if (this.heures > 180) {
-      this.newtaux = this.taux + (this.taux * 0.6)
-      this.base = this.heures * this.newtaux
-      console.log(this.newtaux)
-    }
-
-    this.calculCotis()
-
   }
 
   detteSoc = 0
@@ -65,16 +77,16 @@ export class AppComponent {
   totalCotis = 0
 
   calculCotis() {
-    this.detteSoc = this.base * 0.0349
-    this.contriSoc = this.base * 0.0615
-    this.assMal = this.base * 0.0095
-    this.assViell = this.base * 0.0844
-    this.assChom = this.base * 0.0305
-    this.retrComp = this.base * 0.0381
-    this.cortisAGFF = this.base * 0.0102
+    let factor = 10**2
+    this.detteSoc = Math.round((this.base * 0.0349) *factor)/(factor)
+    this.contriSoc = Math.round((this.base * 0.0615) *factor)/(factor)
+    this.assMal = Math.round((this.base * 0.0095) *factor)/(factor)
+    this.assViell = Math.round((this.base * 0.0102) *factor)/(factor)
+    this.assChom = Math.round((this.base * 0.0305) *factor)/(factor)
+    this.retrComp = Math.round((this.base * 0.0381) *factor)/(factor)
+    this.cortisAGFF = Math.round((this.base * 0.0102) *factor)/(factor)
 
-    this.totalCotis = this.detteSoc + this.contriSoc + this.assMal + this.assViell + this.assChom + this.retrComp + this.cortisAGFF
-
+    this.totalCotis = Math.round((this.detteSoc + this.contriSoc + this.assMal + this.assViell + this.assChom + this.retrComp + this.cortisAGFF) * factor) / factor;
   }
 
   enfant = 0
@@ -95,8 +107,10 @@ export class AppComponent {
     }
 
   }
+  
   TTC = 0
   calculTotal() {
-    this.TTC = this.base - this.totalCotis + this.prime
+    let factor = 10**2
+    this.TTC = Math.round((this.base - this.totalCotis + this.prime) * factor) / factor
   }
 }
