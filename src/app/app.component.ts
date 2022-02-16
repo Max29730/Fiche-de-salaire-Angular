@@ -1,6 +1,10 @@
-import {
-  Component
-} from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import jsPDF from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
+
 
 @Component({
   selector: 'app-root',
@@ -9,6 +13,21 @@ import {
 })
 export class AppComponent {
   title = 'salaire';
+
+  @ViewChild('pdfTable')
+  pdfTable!: ElementRef;
+  
+  downloadAsPDF() {
+    const doc = new jsPDF();
+   
+    const pdfTable = this.pdfTable.nativeElement;
+   
+    var html = htmlToPdfmake(pdfTable.innerHTML);
+     
+    const documentDefinition = { content: html };
+    pdfMake.createPdf(documentDefinition).open(); 
+     
+  }
 
   nom = ""
   statut = 0
@@ -32,6 +51,26 @@ export class AppComponent {
     descri?.classList.replace("d-block", "d-none")
   }
 
+  afficheInfoK() {
+    let descri = document.getElementById("kids")
+    descri?.classList.replace("d-none", "d-block")
+  }
+
+  hideInfoK() {
+    let descri = document.getElementById("kids")
+    descri?.classList.replace("d-block", "d-none")
+  }
+
+  afficheInfoN() {
+    let descri = document.getElementById("net")
+    descri?.classList.replace("d-none", "d-block")
+  }
+
+  hideInfoN() {
+    let descri = document.getElementById("net")
+    descri?.classList.replace("d-block", "d-none")
+  }
+
   statutTaux() {
     if (this.statut == 1) {
       this.taux = 15
@@ -44,7 +83,6 @@ export class AppComponent {
     if (this.statut == 3) {
       this.taux = 10
     }
-    console.log(this.taux)
   }
 
   calculBase() {

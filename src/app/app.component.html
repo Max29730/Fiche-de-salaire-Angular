@@ -1,86 +1,95 @@
-<div class="m-2 text-light">
-    <div>
+<div class="text-light container border p-3 w-50 m-auto" id="pdfTable" #pdfTable>
+    <div class="row">
         <h1><input type="text" [(ngModel)]="nom" class="bg-dark text-light" placeholder="Nom du salarié"></h1>
         <h2><select name="statut" id="statut" [(ngModel)]="statut" (change)="statutTaux()" class="bg-dark text-light">
-      <option value=1>Cadre</option>
-      <option value=2>Agent de maîtrise</option>
-      <option value=3>Employé de bureau</option>
-    </select></h2>
+          <option value="0">Poste</option>
+          <option value=1>Cadre</option>
+          <option value=2>Agent de maîtrise</option>
+          <option value=3>Employé de bureau</option>
+        </select></h2>
     </div>
 
     <div>
-        <h3>Salaire de base</h3>
-        <p class="text-info fst-italic" (mouseenter)="afficheInfo()" (mouseleave)="hideInfo()">taux horaire x heures travaillées (+majoration)</p>
+        <h3 class="mt-5">Salaire de base</h3>
+        <p class="text-info fst-italic">taux horaire x heures travaillées (+majoration)</p>
         <div id="descri" class="d-none fst-italic text-info">
             <p>de 169 à 180 heures le taux horaire est majoré de 50 %</p>
             <p>au delà de 180 heures le taux horaire est majoré de 60 %</p>
         </div>
-        <p>Taux horaire</p>
-        <p>Pour ce poste : {{taux}}€ / heure</p>
-        <input type="number" id="heures" [(ngModel)]="heures" (input)="calculBase()">
-        <p class="fw-bold">{{base}}€</p>
+        <p class="text-info fw-bold">Taux horaire pour ce poste : {{taux}}€ / heure</p>
+        <input type="number" id="heures" [(ngModel)]="heures" (input)="calculBase()" (focus)="afficheInfo()" (focusout)="hideInfo()" class="bg-dark text-light">
+        <p class="fw-bold text-warning">Salaire brut : {{base}}€</p>
     </div>
 
-    <div>
+    <div class="mt-5">
         <h3>Cotisations salariales</h3>
-        <div>
+        <div class="mt-4">
             <h5>Contribution dette sociale</h5>
-            <p>Salaire net * 3.49%</p>
+            <p class="text-info fst-italic">Salaire net * 3.49%</p>
             <p>{{detteSoc}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h5>Contribution sociale</h5>
-            <p>Salaire net * 6.51%</p>
+            <p class="text-info fst-italic">Salaire net * 6.51%</p>
             <p>{{contriSoc}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h5>Assurance maladie</h5>
-            <p>Salaire net * 0.95%</p>
+            <p class="text-info fst-italic">Salaire net * 0.95%</p>
             <p>{{assMal}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h5>Assurance vieillesse</h5>
-            <p>Salaire net * 8.44%</p>
+            <p class="text-info fst-italic">Salaire net * 8.44%</p>
             <p>{{assViell}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h5>Assurance chômage</h5>
-            <p>Salaire net * 3.05%</p>
+            <p class="text-info fst-italic">Salaire net * 3.05%</p>
             <p>{{assChom}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h5>Retraite complémentaire</h5>
-            <p>Salaire net * 3.81%</p>
+            <p class="text-info fst-italic">Salaire net * 3.81%</p>
             <p>{{retrComp}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h5>Cotisation AGFF</h5>
-            <p>Salaire net * 1.02%</p>
+            <p class="text-info fst-italic">Salaire net * 1.02%</p>
             <p>{{cortisAGFF}}€</p>
         </div>
 
-        <div>
+        <div class="mt-4">
             <h4>Total cotisations salariales</h4>
-            <h4>{{totalCotis}}€</h4>
+            <h4 class="text-warning">{{totalCotis}}€</h4>
         </div>
     </div>
 
-    <div>
-        <h3>Prime</h3>
+    <div class="mt-5">
+        <h3>Prime famille</h3>
         <label for="enfant">Nombre d'enfants</label>
-        <input type="number" id="enfant" [(ngModel)]="enfant" (input)="calculPrime()">
-        <p>{{prime}}</p>
+        <input type="number" id="enfant" [(ngModel)]="enfant" (input)="calculPrime()" (focus)="afficheInfoK()" (focusout)="hideInfoK()" class="m-2 bg-dark text-light">
+        <ul id="kids" class="d-none fst-italic text-info">
+            <li>0 enfant, pas de prime</li>
+            <li>1 enfant, 20 Euros de prime</li>
+            <li>2 enfants, 50 Euros de prime</li>
+            <li>plus de 2 enfants, 70 Euros + 20 Euros par enfants au dessus de 2</li>
+        </ul>
+        <p class="fw-bold text-warning">Prime : {{prime}}€</p>
     </div>
 
-    <div>
+    <div class="mt-5">
         <h2>Net à payer</h2>
-        <button (click)="calculTotal()">Total</button>
-        <h2>{{TTC}}</h2>
+        <button class="bg-dark text-light" (click)="calculTotal()" (mouseenter)="afficheInfoN()" (mouseleave)="hideInfoN()">Total</button>
+        <p id="net" class="d-none fst-italic text-info">Net à payer = Salaire de base – total des cotisations salariales + prime</p>
+        <h2 class="text-warning">{{TTC}}€</h2>
     </div>
+
+    <button class="btn btn-primary" (click)="downloadAsPDF()">Format PDF</button>
 </div>
