@@ -2,7 +2,7 @@
     <div class="row">
         <h1><input type="text" [(ngModel)]="nom" class="bg-dark text-light" placeholder="Nom du salarié"></h1>
         <h2><select name="statut" id="statut" [(ngModel)]="statut" (change)="statutTaux()" class="bg-dark text-light">
-          <option value="0">Poste</option>
+          <option disabled selected hidden value="0" >Poste</option>
           <option value=1>Cadre</option>
           <option value=2>Agent de maîtrise</option>
           <option value=3>Employé de bureau</option>
